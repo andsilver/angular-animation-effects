@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FlipBoxEffects } from './flip/effects';
+import { FlipBoxEffects } from '../animation/flip/effects';
 
 @Component({
   selector: 'app-root',
@@ -7,9 +7,5 @@ import { FlipBoxEffects } from './flip/effects';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  flip = false;
   effects = FlipBoxEffects;
-  rotate() {
-    this.flip = !this.flip;
-  }
 }

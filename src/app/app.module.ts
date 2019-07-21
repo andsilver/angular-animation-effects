@@ -1,4 +1,4 @@
-import { FlipModule } from './flip/flip.module';
+import { FlipModule } from '../animation/flip/flip.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';

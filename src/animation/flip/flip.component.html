@@ -1,0 +1,10 @@
+<div class="flipper" (mouseenter)="onEnter($event)" (mouseleave)="onLeave($event)">
+  <div class="flipper-content-{{prefix}}" [@content]="contentState">
+    <div class="front">
+      <ng-content select="flip-box-sideA"></ng-content>
+    </div>
+    <div class="back {{sideBStyle}}" [@sideB]="sideBState">
+      <ng-content select="flip-box-sideB"></ng-content>
+    </div>
+  </div>
+</div>
