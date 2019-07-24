@@ -7,5 +7,5 @@ import { FlipBoxEffects } from '../animation/flip/effects';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  effects = FlipBoxEffects;
+  FlipBoxEffects = FlipBoxEffects;
 }

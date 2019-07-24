@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --watch --poll 200",
     "build": "ng build --prod",
     "test": "ng test",
     "jenkins-test": "ng test --browsers ChromeHeadless --watch=false",

@@ -1,9 +1,11 @@
 export enum FlipBoxEffects {
   Flip,
-  Slide,
+  SlideLeft,
+  SlideRight,
+  SlideTop,
+  SlideBottom,
   Push,
   ZoomIn,
   ZoomOut,
-  Fade,
-  Highlight
+  Fade
 }

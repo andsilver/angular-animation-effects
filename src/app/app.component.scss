@@ -1,41 +1,25 @@
-.a-side {
-  width: 400px;
-  height: 250px;
-  background: pink;
+:host {
+  display: block;
+  overflow: auto;
 
-  img {
-    width: 100%;
-    height: 100%;
+  height: calc(100vh);
+  width: calc(100vw);
+
+  ::ng-deep flip-box {
+    width: 284px;
+    height: 250px;
+
+    .front{
+      background: pink;
+    }
+    .back {
+      background: orangered;
+      color: white;
+      h1 {
+        margin: 0;
+      }
+    }
   }
-}
-
-.b-side {
-  width: 400px;
-  height: 250px;
-  background: orangered;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  h1 {
-    margin: 0;
-  }
-}
 
 
-.b-side-highlight {
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  width: 400px;
-  height: 250px;
-  color: white;
-
-  h1 {
-    margin: 0;
-    background: orangered;
-    padding: 4px;
-    width: 100%;
-  }
 }
