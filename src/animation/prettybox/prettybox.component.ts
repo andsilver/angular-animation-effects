@@ -1,32 +1,43 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, HostListener, ElementRef, Renderer2, HostBinding } from '@angular/core';
+import { Component, Input, OnInit, ElementRef, Renderer2, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { PrettyBoxEffects } from './prettyeffect';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'pretty-box',
   templateUrl: './prettybox.component.html',
   styleUrls: ['./prettybox.component.scss']
 })
-export class PrettyboxComponent implements OnInit {
-  prefix: string;
+export class PrettyboxComponent  implements OnInit, OnChanges, OnDestroy {
 
-  constructor(public elementRef: ElementRef, private renderer: Renderer2) { }
-  @Input() effect;
+  Effects = PrettyBoxEffects;
+
+  effect$ = new Subject<PrettyBoxEffects>();
+  stop$ = new Subject<void>();
+
+  constructor(public elementRef: ElementRef, private renderer: Renderer2) {
+    this.effect$.pipe(takeUntil(this.stop$)).subscribe(effect => {
+      this.renderer.addClass(
+        this.elementRef.nativeElement,
+        'effect-' + effect.toString()
+      );
+    });
+  }
+
+  @Input() effect = PrettyBoxEffects.Apollo;
+
   ngOnInit() {
-    if (this.effect === PrettyBoxEffects.Steve) {
-      this.prefix = 'steve';
+    this.effect$.next(this.effect);
+  }
+
+  ngOnDestroy(): void {
+    this.stop$.next();
+    this.stop$.complete();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.effect) {
+      this.effect$.next(changes.effect.currentValue);
     }
-    if (this.effect === PrettyBoxEffects.Goliath) {
-      this.prefix = 'goliath';
-    }
-    if (this.effect === PrettyBoxEffects.Duke) {
-      this.prefix = 'duke'
-    }
-    if (this.effect === PrettyBoxEffects.Apollo) {
-      this.prefix = 'apollo'
-    }
-    this.renderer.addClass(
-      this.elementRef.nativeElement,
-      'effect-' + this.prefix
-    );
   }
 }

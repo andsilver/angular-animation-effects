@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { PrettyboxComponent } from './prettybox.component';
-import { PrettyBoxSideAComponent } from './pretty-box-sideA';
-import { PrettyBoxSideBComponent } from './pretty-box-sideB';
+import { PrettyBoxBackgroundComponent } from './pretty-box-background';
+import { PrettyBoxContentComponent } from './pretty-box-content';
 
 @NgModule({
   imports: [CommonModule, BrowserAnimationsModule],
-  exports: [PrettyboxComponent, PrettyBoxSideAComponent, PrettyBoxSideBComponent],
-  declarations: [PrettyboxComponent, PrettyBoxSideAComponent, PrettyBoxSideBComponent]
+  exports: [PrettyboxComponent, PrettyBoxBackgroundComponent, PrettyBoxContentComponent],
+  declarations: [PrettyboxComponent, PrettyBoxBackgroundComponent, PrettyBoxContentComponent]
 })
 export class PrettyBoxModule { }

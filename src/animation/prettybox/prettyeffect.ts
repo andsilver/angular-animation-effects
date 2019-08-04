@@ -1,6 +1,6 @@
 export enum PrettyBoxEffects {
-  Apollo,
-  Steve,
-  Duke,
-  Goliath,
+  Apollo = 'apollo',
+  Steve = 'steve',
+  Duke = 'duke',
+  Goliath = 'goliath'
 }

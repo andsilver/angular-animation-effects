@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'pretty-box-sideA',
+  selector: 'pretty-box-content',
   template: '<ng-content></ng-content>',
   styles: [`
   :host {
@@ -11,7 +11,7 @@ import { Component, OnInit } from '@angular/core';
     width: 100%;
   }`]
 })
-export class PrettyBoxSideAComponent implements OnInit {
+export class PrettyBoxContentComponent implements OnInit {
   constructor() { }
 
   ngOnInit() { }
