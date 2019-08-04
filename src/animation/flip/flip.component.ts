@@ -1,104 +1,63 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   Input,
   OnInit,
   HostListener,
   ElementRef,
   Renderer2,
-  HostBinding
+  OnChanges,
+  SimpleChanges,
+  OnDestroy,
 } from '@angular/core';
-import {
-  trigger,
-  style,
-  state,
-  transition,
-  animate
-} from '@angular/animations';
+
 import { FlipBoxEffects } from './effects';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'flip-box',
   templateUrl: './flip.component.html',
   styleUrls: ['./flip.component.scss'],
-  animations: [
-    trigger('content', [
-      state('flip-in', style({ transform: 'rotateY(180deg)' })),
-      transition('* => *', animate(500))
-    ]),
-    trigger('sideB', [
-      state('slide-in', style({ transform: 'translate3d(0, 0, 0)' })),
-      transition('* => *', animate(200))
-    ])
-  ]
 })
-export class FlipComponent implements OnInit {
-  prefix: string;
+export class FlipComponent implements OnInit, OnChanges, OnDestroy {
 
-  contentState = '';
-  sideBState = '';
   Effects = FlipBoxEffects;
 
-  constructor(public elementRef: ElementRef, private renderer: Renderer2) {}
+  effect$ = new Subject<FlipBoxEffects>();
+  stop$ = new Subject<void>();
 
-  @Input() effect;
-
-  @HostBinding('@content')
-  get getContentState(): string {
-    return this.contentState;
+  constructor(public elementRef: ElementRef, private renderer: Renderer2) {
+    this.effect$.pipe(takeUntil(this.stop$)).subscribe(effect => {
+      this.renderer.addClass(
+        this.elementRef.nativeElement,
+        'effect-' + effect.toString()
+      );
+    });
   }
 
-  ngOnInit() {
-    if (this.effect === FlipBoxEffects.Flip) {
-      this.prefix = 'flip';
-    }
-    if (this.effect === FlipBoxEffects.SlideLeft) {
-      this.prefix = 'slide-left';
-    }
-    if (this.effect === FlipBoxEffects.SlideRight) {
-      this.prefix = 'slide-right';
-    }
-    if (this.effect === FlipBoxEffects.SlideTop) {
-      this.prefix = 'slide-top';
-    }
-    if (this.effect === FlipBoxEffects.SlideBottom) {
-      this.prefix = 'slide-bottom';
-    }
-    if (this.effect === FlipBoxEffects.Push) {
-      this.prefix = 'push';
-    }
-    if (this.effect === FlipBoxEffects.ZoomIn) {
-      this.prefix = 'zoom-in';
-    }
-    if (this.effect === FlipBoxEffects.ZoomOut) {
-      this.prefix = 'zoom-out';
-    }
-    if (this.effect === FlipBoxEffects.Fade) {
-      this.prefix = 'fade';
-    }
+  @Input() effect = FlipBoxEffects.Flip;
 
-    this.renderer.addClass(this.elementRef.nativeElement, 'effect-' + this.prefix);
+  ngOnInit() {
+    this.effect$.next(this.effect);
+  }
+
+  ngOnDestroy(): void {
+    this.stop$.next();
+    this.stop$.complete();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.effect) {
+      this.effect$.next(changes.effect.currentValue);
+    }
   }
 
   @HostListener('mouseover')
   onEnter(event: MouseEvent) {
-    if (this.effect === FlipBoxEffects.Flip) {
-      this.contentState = 'flip-in';
-    }
-    if (
-      this.effect === FlipBoxEffects.SlideLeft ||
-      this.effect === FlipBoxEffects.SlideRight ||
-      this.effect === FlipBoxEffects.SlideTop ||
-      this.effect === FlipBoxEffects.SlideBottom ||
-      this.effect === FlipBoxEffects.Push
-    ) {
-      this.sideBState = 'slide-in';
-    }
+
   }
 
   @HostListener('mouseleave')
-  onLeave(event: AnimationEvent) {
-    this.contentState = '';
-    this.sideBState = '';
+  onLeave(event: MouseEvent) {
   }
 }

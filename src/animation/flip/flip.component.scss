@@ -3,79 +3,107 @@
   flex-flow: row nowrap;
   flex: 1 0 0;
   position: relative;
-  overflow: hidden;
+
 
   .front {
     pointer-events: none;
   }
 
-  .front,.back {
+  .front,
+  .back {
+    transition: all 0.5s ease-in-out;
     position: absolute;
     width: 100%;
     height: 100%;
   }
 
   &.effect-flip {
+    perspective: 1000px;
     transform-style: preserve-3d;
-    transition: all 0.5s ease-in-out;
 
     .front {
-      transition: all 0.5s ease-in-out;
       backface-visibility: hidden;
     }
 
     .back {
-      transition: all 0.5s ease-in-out;
       transform: rotateY(180deg);
       backface-visibility: hidden;
     }
 
     &:hover .front {
-      transition: all 0.5s ease-in-out;
       transform: rotateY(180deg);
     }
 
     &:hover .back {
-      transition: all 0.5s ease-in-out;
       transform: rotateY(0deg);
     }
   }
 
   &.effect-slide-left {
+    overflow: hidden;
+
     .back {
       transform: translate3d(100%, 0, 0);
+    }
+    &:hover .back {
+      transform: translate3d(0, 0, 0);
     }
   }
 
   &.effect-slide-right {
+    overflow: hidden;
+
     .back {
       transform: translate3d(-100%, 0, 0);
+    }
+    &:hover .back {
+      transform: translate3d(0, 0, 0);
     }
   }
 
   &.effect-slide-bottom {
+    overflow: hidden;
+
     .back {
       transform: translate3d(0, -100%, 0);
+    }
+    &:hover .back {
+      transform: translate3d(0, 0, 0);
     }
   }
 
   &.effect-slide-top {
+    overflow: hidden;
+
     .back {
       transform: translate3d(0, 100%, 0);
+    }
+    &:hover .back {
+      transform: translate3d(0, 0, 0);
     }
   }
 
   &.effect-push {
-    transition: 0.5s;
+    overflow: hidden;
+
     .back {
       transform: translate3d(0, 100%, 0);
+    }
+
+    &:hover .front {
+      transform: translate3d(0, -100%, 0);
+    }
+
+    &:hover .back {
+      transform: translate3d(0, 0, 0);
     }
   }
 
   &.effect-zoom-in {
+    overflow: hidden;
+
     .back {
       transform: scale(0);
-      transition: 0.5s;
     }
 
     &:hover .back {
@@ -84,9 +112,10 @@
   }
 
   &.effect-zoom-out {
+    overflow: hidden;
+
     .front {
       z-index: 2;
-      transition: 0.5s;
     }
 
     &:hover .front {
@@ -95,9 +124,10 @@
   }
 
   &.effect-fade {
+    overflow: hidden;
+
     .front {
       z-index: 2;
-      transition: 0.5s;
     }
 
     &:hover .front {

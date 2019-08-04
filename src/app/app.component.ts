@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FlipBoxEffects } from '../animation/flip/effects';
+import { PrettyBoxEffects } from 'src/animation/prettybox/prettyeffect';
 
 @Component({
   selector: 'app-root',
@@ -8,4 +9,5 @@ import { FlipBoxEffects } from '../animation/flip/effects';
 })
 export class AppComponent {
   FlipBoxEffects = FlipBoxEffects;
+  PrettyBoxEffects = PrettyBoxEffects;
 }
