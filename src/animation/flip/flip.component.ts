@@ -35,7 +35,7 @@ export class FlipComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  @Input() effect = FlipBoxEffects.Flip;
+  @Input() effect = FlipBoxEffects.FlipHorizontal;
 
   ngOnInit() {
     this.effect$.next(this.effect);
