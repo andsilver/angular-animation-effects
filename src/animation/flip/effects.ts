@@ -1,5 +1,6 @@
 export enum FlipBoxEffects {
   FlipHorizontal = 'flip-horizontal',
+  FlipVertical = 'flip-vertical',
   SlideLeft = 'slide-left',
   SlideRight = 'slide-right',
   SlideTop = 'slide-top',
