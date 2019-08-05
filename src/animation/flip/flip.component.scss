@@ -39,12 +39,35 @@
     }
   }
 
+  &.effect-flip-vertical {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+
+    .front {
+      backface-visibility: hidden;
+    }
+
+    .back {
+      transform: rotateX(180deg);
+      backface-visibility: hidden;
+    }
+
+    &:hover .front {
+      transform: rotateX(180deg);
+    }
+
+    &:hover .back {
+      transform: rotateX(0deg);
+    }
+  }
+
   &.effect-slide-left {
     overflow: hidden;
 
     .back {
       transform: translate3d(100%, 0, 0);
     }
+
     &:hover .back {
       transform: translate3d(0, 0, 0);
     }
@@ -56,6 +79,7 @@
     .back {
       transform: translate3d(-100%, 0, 0);
     }
+
     &:hover .back {
       transform: translate3d(0, 0, 0);
     }
@@ -67,6 +91,7 @@
     .back {
       transform: translate3d(0, -100%, 0);
     }
+
     &:hover .back {
       transform: translate3d(0, 0, 0);
     }
@@ -78,6 +103,7 @@
     .back {
       transform: translate3d(0, 100%, 0);
     }
+
     &:hover .back {
       transform: translate3d(0, 0, 0);
     }
