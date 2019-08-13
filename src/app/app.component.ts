@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FlipBoxEffects } from '../animation/flip/effects';
 import { PrettyBoxEffects } from 'src/animation/prettybox/prettyeffect';
+import { Orientations } from '../animation/slider/slider_orientation'
 
 @Component({
   selector: 'app-root',
@@ -10,4 +11,5 @@ import { PrettyBoxEffects } from 'src/animation/prettybox/prettyeffect';
 export class AppComponent {
   FlipBoxEffects = FlipBoxEffects;
   PrettyBoxEffects = PrettyBoxEffects;
+  Orientations = Orientations;
 }
