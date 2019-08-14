@@ -1,6 +1,11 @@
 <div class="before">
   <ng-content select="before"></ng-content>
 </div>
-<div class="after">
+<div class="after" [style.width]="afterWidth + 'px'" [style.height]="afterHeight + 'px'">
   <ng-content select="after"></ng-content>
+</div>
+<div class="scroller" [ngClass]="{'rotate90': orientation == 'horizontal'}" #scroller [style.left]="scrollX + 'px'"
+  [style.top]="scrollY + 'px'">
+  <span>&#8249;</span>
+  <span>&#8250;</span>
 </div>
