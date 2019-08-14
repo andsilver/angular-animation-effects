@@ -7,9 +7,13 @@
   .before,
   .after {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+    overflow: hidden !important;
+
+    ::ng-deep img {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
   }
 
   .scroller {
@@ -34,5 +38,17 @@
 
   .rotate90 {
     transform: rotate(90deg);
+  }
+
+  .overlay {
+    position: absolute;
+    width: 250px;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 10px;
+    box-sizing: border-box;
+    color: #DDD;
+    text-align: right;
   }
 }
