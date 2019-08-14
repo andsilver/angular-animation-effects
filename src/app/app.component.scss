@@ -113,19 +113,4 @@
       }
     }
   }
-
-  ::ng-deep before-after {
-    min-width: 384px;
-    min-height: 288px;
-    max-width: 384px;
-    max-height: 300px;
-    margin-right: 20px;
-    margin-bottom: 20px;
-    flex: 1 0 0;
-
-    img {
-      width: 100%;
-      height: 100%;
-    }
-  }
 }

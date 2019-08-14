@@ -6,17 +6,33 @@
 
   .before,
   .after {
-    transition: all 0.5s ease-in-out;
     position: absolute;
     width: 100%;
-    height: auto;
+    height: 100%;
+    overflow: hidden;
   }
 
-  .before {
-    margin-bottom: 0 !important;
+  .scroller {
+    cursor: pointer;
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    color: white;
+    font-size: 32px;
+    border-radius: 50%;
+
+    span {
+      padding-bottom: 8px;
+      pointer-events: none;
+    }
   }
 
-  &.effect-horizontal {}
-
-  &.effect-vertical {}
+  .rotate90 {
+    transform: rotate(90deg);
+  }
 }
