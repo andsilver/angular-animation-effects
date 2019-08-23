@@ -3,20 +3,80 @@
   flex-flow: row nowrap;
   flex: 1 0 0;
   position: relative;
+  overflow: hidden;
 
   .before,
   .after {
-    transition: all 0.5s ease-in-out;
     position: absolute;
-    width: 100%;
-    height: auto;
+    overflow: hidden !important;
+
+    ::ng-deep {
+      img {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      .title {
+        position: absolute;
+      }
+    }
+  }
+
+  .before::ng-deep .title {
+    top: 100px;
+    left: 100px;
+    z-index: 85;
+  }
+
+  .after::ng-deep .title {
+    bottom: 100px;
+    right: 100px;
+    z-index: 85;
   }
 
   .before {
-    margin-bottom: 0 !important;
+    z-index: 90;
   }
 
-  &.effect-horizontal {}
+  .after {
+    z-index: 80;
+  }
 
-  &.effect-vertical {}
+  .scroller {
+    cursor: pointer;
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    color: white;
+    font-size: 32px;
+    border-radius: 50%;
+    z-index: 99;
+
+    span {
+      padding-bottom: 8px;
+      pointer-events: none;
+    }
+  }
+
+  .rotate90 {
+    transform: rotate(90deg);
+  }
+
+  .overlay {
+    position: absolute;
+    width: 250px;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 10px;
+    box-sizing: border-box;
+    color: #DDD;
+    text-align: right;
+  }
 }
