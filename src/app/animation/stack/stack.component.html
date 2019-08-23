@@ -1,0 +1,8 @@
+<ng-content></ng-content>
+<div class="select-area" (mouseenter)="active()" (mouseleave)="deactive()">
+  <a
+    *ngFor="let child of children; let i=index;"
+    (click)="selectItem(i)" class="select-area-button"
+    [ngClass]="{'active': i == selectedIndex }"
+  ></a>
+</div>

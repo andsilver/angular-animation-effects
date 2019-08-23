@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Orientations } from '../../../animation/slider/slider_orientation';
+import { Orientations } from '../../animation/slider/slider_orientation';
 
 @Component({
   selector: 'app-before-after-container',

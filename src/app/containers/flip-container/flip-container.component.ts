@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FlipBoxEffects } from '../../../animation/flip/effects';
+import { FlipBoxEffects } from '../../animation/flip/effects';
 
 @Component({
   selector: 'app-flip-container',
