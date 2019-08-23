@@ -1,0 +1,35 @@
+:host {
+  display: flex;
+  flex: 1;
+  flex-flow: row wrap;
+  margin: 30px 30px 30px 10px;
+
+
+  ::ng-deep flip-box {
+    min-width: 384px;
+    min-height: 288px;
+    max-width: 384px;
+    max-height: 300px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    flex: 1 0 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .front {
+      background: pink;
+    }
+
+    .back {
+      background: orangered;
+      color: white;
+
+      h1 {
+        margin: 0;
+      }
+    }
+  }
+}
