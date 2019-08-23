@@ -3,6 +3,8 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Orientations } from './slider_orientation';
 
+const SCROLLER_RADIUS = 16;
+
 @Component({
   selector: 'before-after',
   templateUrl: './slider.component.html',
@@ -38,6 +40,7 @@ export class SliderComponent implements OnInit, OnChanges, OnDestroy, AfterViewI
   scrollY = 50;
   afterWidth = 0;
   afterHeight = 0;
+  dividerWidth = 0;
 
   moving = false;
 
@@ -60,14 +63,14 @@ export class SliderComponent implements OnInit, OnChanges, OnDestroy, AfterViewI
         y = 0;
       if (y > this.height)
         y = this.height;
-      this.scrollY = y - 15;
+      this.scrollY = y - SCROLLER_RADIUS;
       this.afterHeight = y;
     } else {
       if (x < 0)
         x = 0;
       if (x > this.width)
         x = this.width;
-      this.scrollX = x - 15;
+      this.scrollX = x - SCROLLER_RADIUS;
       this.afterWidth = x;
     }
   }
@@ -81,14 +84,16 @@ export class SliderComponent implements OnInit, OnChanges, OnDestroy, AfterViewI
     if (this.orientation === Orientations.Horizontal) {
       this.afterHeight = this.height * (this.start / 100);
       this.afterWidth = this.width;
-      this.scrollX = this.width / 2 - 15;
-      this.scrollY = this.height * (this.start / 100) - 15;
+      this.scrollX = this.width / 2 - SCROLLER_RADIUS;
+      this.scrollY = this.height * (this.start / 100) - SCROLLER_RADIUS;
+      this.dividerWidth = (this.width - 32) / 2;
     }
     if (this.orientation === Orientations.Vertical) {
       this.afterWidth = this.width * (this.start / 100);
       this.afterHeight = this.height;
-      this.scrollY = this.height / 2 - 15;
-      this.scrollX = this.width * (this.start / 100) - 15;
+      this.scrollY = this.height / 2 - SCROLLER_RADIUS;
+      this.scrollX = this.width * (this.start / 100) - SCROLLER_RADIUS;
+      this.dividerWidth = (this.height - 32) / 2;
     }
 
     document.addEventListener('mousedown', this.mouseDown.bind(this));

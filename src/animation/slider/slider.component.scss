@@ -44,8 +44,8 @@
   }
 
   .scroller {
-    cursor: pointer;
     position: absolute;
+    cursor: pointer;
     width: 28px;
     height: 28px;
     display: flex;
@@ -56,10 +56,10 @@
     color: white;
     font-size: 32px;
     border-radius: 50%;
-    z-index: 99;
+    z-index: 95;
 
-    span {
-      padding-bottom: 8px;
+    .direction-mark {
+      padding-bottom: 7px;
       pointer-events: none;
     }
   }
@@ -78,5 +78,13 @@
     box-sizing: border-box;
     color: #DDD;
     text-align: right;
+  }
+
+  .divider-line {
+    display: block;
+    position: absolute;
+    background: rgba(255, 255, 255, 0.7);
+    z-index: 96;
+    transform-origin: left;
   }
 }
