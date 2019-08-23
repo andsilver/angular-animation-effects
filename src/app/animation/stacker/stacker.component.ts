@@ -1,20 +1,20 @@
 import { Component, OnInit, Input, ElementRef, Renderer2, ViewChildren, AfterViewInit, ContentChildren, QueryList } from '@angular/core';
-import { StackEffects } from './stack-effects';
-import { StackItemComponent } from './stack-item.component';
+import { StackerEffects } from './stacker-effects';
+import { StackerItemComponent } from './stacker-item.component';
 
 @Component({
-  selector: 'stack',
-  templateUrl: './stack.component.html',
-  styleUrls: ['./stack.component.scss']
+  selector: 'stacker',
+  templateUrl: './stacker.component.html',
+  styleUrls: ['./stacker.component.scss']
 })
-export class StackComponent implements OnInit, AfterViewInit {
-  StackEffects = StackEffects;
+export class StackerComponent implements OnInit, AfterViewInit {
+  StackerEffects = StackerEffects;
 
   @Input()
-  effect = StackEffects.Fanout;
+  effect = StackerEffects.Fanout;
 
-  @ContentChildren(StackItemComponent)
-  children: QueryList<StackItemComponent> = new QueryList<any>();
+  @ContentChildren(StackerItemComponent)
+  children: QueryList<StackerItemComponent> = new QueryList<any>();
 
   items: HTMLCollectionOf<any>;
   selectedIndex = 0;
@@ -26,7 +26,7 @@ export class StackComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.items = this.elementRef.nativeElement.getElementsByClassName('stack-item');
+    this.items = this.elementRef.nativeElement.getElementsByClassName('stacker-item');
     this.setVisibility();
   }
 

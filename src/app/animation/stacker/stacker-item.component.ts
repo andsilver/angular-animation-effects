@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, Renderer2 } from '@angular/core';
 
 @Component({
-  selector: 'stack-item',
+  selector: 'stacker-item',
   template: '<ng-content></ng-content>',
   styles: [`
   :host {
@@ -12,11 +12,11 @@ import { Component, OnInit, ElementRef, Renderer2 } from '@angular/core';
     transition: all ease .3s;
   }`]
 })
-export class StackItemComponent implements OnInit {
+export class StackerItemComponent implements OnInit {
   constructor(private elementRef: ElementRef, private renderer: Renderer2) { }
 
   ngOnInit() {
-    const className = 'stack-item';
+    const className = 'stacker-item';
     this.renderer.addClass(
       this.elementRef.nativeElement,
       className
