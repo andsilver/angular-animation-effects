@@ -3,17 +3,44 @@
   flex-flow: row nowrap;
   flex: 1 0 0;
   position: relative;
+  overflow: hidden;
 
   .before,
   .after {
     position: absolute;
     overflow: hidden !important;
 
-    ::ng-deep img {
-      position: absolute;
-      top: 0;
-      left: 0;
+    ::ng-deep {
+      img {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      .title {
+        position: absolute;
+      }
     }
+  }
+
+  .before::ng-deep .title {
+    top: 100px;
+    left: 100px;
+    z-index: 85;
+  }
+
+  .after::ng-deep .title {
+    bottom: 100px;
+    right: 100px;
+    z-index: 85;
+  }
+
+  .before {
+    z-index: 90;
+  }
+
+  .after {
+    z-index: 80;
   }
 
   .scroller {
@@ -29,6 +56,7 @@
     color: white;
     font-size: 32px;
     border-radius: 50%;
+    z-index: 99;
 
     span {
       padding-bottom: 8px;
