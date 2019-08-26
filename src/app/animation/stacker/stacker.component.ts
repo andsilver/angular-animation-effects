@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef, Renderer2, ViewChildren, AfterViewInit, ContentChildren, QueryList } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, Renderer2, ViewChildren, AfterViewInit, ContentChildren, QueryList, Output, EventEmitter } from '@angular/core';
 import { StackerEffects } from './stacker-effects';
 import { StackerService } from './stacker.service';
 import { Subject, Subscription } from 'rxjs';
@@ -20,6 +20,9 @@ export class StackerComponent implements OnInit, AfterViewInit {
 
   @Input()
   effect = StackerEffects.Fanout;
+
+  @Output()
+  animationend = new EventEmitter();
 
   activeChanges = new Subject<boolean>();
   isActive: boolean = false;
@@ -73,6 +76,7 @@ export class StackerComponent implements OnInit, AfterViewInit {
   selectItem(index: number) {
     this.selectedIndex = index;
     this.active();
+    this.animationend.emit(this.selectedIndex);
   }
 
   active() {

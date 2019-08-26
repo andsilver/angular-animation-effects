@@ -15,4 +15,8 @@ export class StackerContainerComponent implements OnInit {
   ngOnInit() {
   }
 
+  animationend(event) {
+    console.log(event);
+  }
+
 }
