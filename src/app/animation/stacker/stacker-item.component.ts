@@ -1,4 +1,5 @@
-import { Component, OnInit, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, ElementRef, Renderer2, OnDestroy } from '@angular/core';
+import { StackerService } from './stacker.service';
 
 @Component({
   selector: 'stacker-item',
@@ -12,8 +13,8 @@ import { Component, OnInit, ElementRef, Renderer2 } from '@angular/core';
     transition: all ease .3s;
   }`]
 })
-export class StackerItemComponent implements OnInit {
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) { }
+export class StackerItemComponent implements OnInit, OnDestroy {
+  constructor(private elementRef: ElementRef, private renderer: Renderer2, private stackerService: StackerService) { }
 
   ngOnInit() {
     const className = 'stacker-item';
@@ -21,5 +22,15 @@ export class StackerItemComponent implements OnInit {
       this.elementRef.nativeElement,
       className
     );
+
+    (this.elementRef.nativeElement as HTMLElement).addEventListener('click', () => this.selected());
+  }
+
+  ngOnDestroy() {
+    (this.elementRef.nativeElement as HTMLElement).removeEventListener('click', this.selected);
+  }
+
+  selected() {
+    this.stackerService.elementSelected.next(this.elementRef.nativeElement);
   }
 }

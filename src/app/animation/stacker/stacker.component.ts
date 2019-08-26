@@ -1,6 +1,14 @@
 import { Component, OnInit, Input, ElementRef, Renderer2, ViewChildren, AfterViewInit, ContentChildren, QueryList } from '@angular/core';
 import { StackerEffects } from './stacker-effects';
-import { StackerItemComponent } from './stacker-item.component';
+import { StackerService } from './stacker.service';
+import { Subject, Subscription } from 'rxjs';
+import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
+
+interface EffectItem {
+  index: number;
+  element: HTMLElement;
+  position: number;
+}
 
 @Component({
   selector: 'stacker',
@@ -13,78 +21,108 @@ export class StackerComponent implements OnInit, AfterViewInit {
   @Input()
   effect = StackerEffects.Fanout;
 
-  @ContentChildren(StackerItemComponent)
-  children: QueryList<StackerItemComponent> = new QueryList<any>();
-
-  items: HTMLCollectionOf<any>;
+  activeChanges = new Subject<boolean>();
+  isActive: boolean = false;
+  elements: EffectItem[] = [];
   selectedIndex = 0;
+  subscriptions: Subscription[] = [];
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) { }
+  constructor(private elementRef: ElementRef, private renderer: Renderer2, private stacker: StackerService) { }
 
   ngOnInit() {
-
+    this.watchActivation();
+    this.watchSelection();
   }
 
   ngAfterViewInit() {
-    this.items = this.elementRef.nativeElement.getElementsByClassName('stacker-item');
-    this.setVisibility();
-  }
+    setTimeout(() => {
+      const items = this.elementRef.nativeElement.getElementsByClassName('stacker-item');
+      for (let i = 0; i < items.length; i++) {
+        const element = items.item(i);
+        this.elements.push({
+          element,
+          index: i,
+          position: 0
+        });
+        this.renderer.setStyle(element, 'z-index', this.selectedIndex === i ? 99 : 0);
 
-  setVisibility() {
-    for (let i = 0; i < this.items.length; i++) {
-      const item = this.items.item(i);
-      this.renderer.setStyle(item, 'z-index', this.selectedIndex === i ? '99' : `${90 + i}`);
-    }
-  }
-
-  active() {
-    const selectedItem = this.items.item(this.selectedIndex);
-    this.deactiveItem(selectedItem);
-    this.renderer.setStyle(selectedItem, 'transform', 'scale(0.9)');
-    this.renderer.setStyle(selectedItem, 'box-shadow', '0px 7px 17px 3px #0000006b');
-
-    const items = [];
-    for (let i = 0; i < this.items.length; i++) {
-      const item = this.items.item(i);
-      if (i !== this.selectedIndex)
-        items.push(item);
-    }
-    let li = 0, ri = 0;
-    items.forEach((item, index) => {
-      if (index < items.length / 2) {
-        this.activeItem(items.length / 2 - li, 'left', item);
-        li += 1;
-      } else {
-        this.activeItem(items.length / 2 - ri, 'right', item);
-        ri += 1;
+        (element as HTMLElement).addEventListener('mouseover', () => this.activeChanges.next(true));
+        (element as HTMLElement).addEventListener('mouseleave', () => this.activeChanges.next(false));
       }
     });
   }
 
+  watchSelection() {
+    this.subscriptions.push(
+      this.stacker.elementSelected.subscribe(item => {
+        const index = this.elements.findIndex(el => el.element === item);
+        this.selectItem(index);
+      })
+    );
+  }
+
+  watchActivation() {
+    this.subscriptions.push(
+      this.activeChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe(status => {
+        this.isActive = status;
+        status ? this.active() : this.deactive();
+      })
+    );
+  }
+
+  selectItem(index: number) {
+    this.selectedIndex = index;
+    this.active();
+  }
+
+  active() {
+    const center = Math.floor(this.elements.length / 2);
+    for (let i = 1; i <= center; i++) {
+      let pos = this.selectedIndex - i;
+      if (pos < 0) pos = this.elements.length + pos;
+      const item = this.elements[pos];
+      item.position = center - i;
+      this.setActiveStyle(i, 'left', item.element);
+    }
+
+    for (let i = 1; i < this.elements.length - center; i++) {
+      let pos = this.selectedIndex + i;
+      if (pos >= this.elements.length) pos = pos - this.elements.length;
+      const item = this.elements[pos];
+      item.position = center + i;
+      this.setActiveStyle(i, 'right', item.element);
+    }
+
+    const selectedItem = this.elements[this.selectedIndex];
+    this.setDeactiveStyle(selectedItem.element, this.selectedIndex);
+    this.setActiveStyle(null, 'center', selectedItem.element);
+    selectedItem.position = center;
+  }
+
   deactive() {
-    for (let i = 0; i < this.items.length; i++) {
-      const item = this.items.item(i);
-      this.deactiveItem(item);
+    this.elements.forEach((el, index) => {
+      this.setDeactiveStyle(el.element, index);
+    });
+  }
+
+  setActiveStyle(index: number, direction: 'left' | 'right' | 'center', item: HTMLElement) {
+    this.renderer.setStyle(item, 'box-shadow', '0px 7px 17px 3px #0000006b');
+    const transform = 'scale(0.9)' + direction !== 'center' ? ` rotate(${direction === 'left' ? -index * 10 : index * 10}deg)` : '';
+    this.renderer.setStyle(item, 'transform', transform);
+    if (direction !== 'center') {
+      this.renderer.setStyle(item, 'left', `${direction === 'left' ? -index * 100 : index * 100}px`);
+      this.renderer.setStyle(item, 'top', `${index * 20}px`);
+      this.renderer.setStyle(item, 'z-index', `${90 - index}`);
+      this.renderer.setStyle(item, 'opacity', 1);
     }
   }
 
-  activeItem(index: number, direction: 'left' | 'right', item) {
-    this.renderer.setStyle(item, 'box-shadow', '0px 7px 17px 3px #0000006b');
-    this.renderer.setStyle(item, 'transform', `scale(0.9) rotate(${direction === 'left' ? -index * 10 : index * 10}deg)`);
-    this.renderer.setStyle(item, 'left', `${direction === 'left' ? -index * 100 : index * 100}px`);
-    this.renderer.setStyle(item, 'top', `${index * 20}px`);
-  }
-
-  deactiveItem(item) {
-    this.renderer.setStyle(item, 'top', '0');
-    this.renderer.setStyle(item, 'left', '0');
+  setDeactiveStyle(item: HTMLElement, index: number) {
+    this.renderer.setStyle(item, 'top', 0);
+    this.renderer.setStyle(item, 'left', 0);
+    this.renderer.setStyle(item, 'transform', 'scale(1)');
+    this.renderer.setStyle(item, 'z-index', index === this.selectedIndex ? 99 : 0);
+    this.renderer.setStyle(item, 'opacity', index === this.selectedIndex ? 1 : 0);
     this.renderer.removeStyle(item, 'box-shadow');
-    this.renderer.removeStyle(item, 'transform');
-  }
-
-  selectItem(i) {
-    this.selectedIndex = i;
-    this.setVisibility()
-    this.active();
   }
 }
