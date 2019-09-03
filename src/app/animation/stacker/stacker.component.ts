@@ -63,7 +63,7 @@ export class StackerComponent implements OnInit, AfterViewInit, OnDestroy {
 
   watchActivation() {
     this.subscriptions.push(
-      this.activeChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe(status => {
+      this.activeChanges.pipe(debounceTime(100), distinctUntilChanged()).subscribe(status => {
         this.isActive = status;
         status ? this.active() : this.deactive();
       })
@@ -89,6 +89,7 @@ export class StackerComponent implements OnInit, AfterViewInit, OnDestroy {
       case StackerEffects.RandomRotation:
       case StackerEffects.Queue:
       case StackerEffects.ElasticSpread:
+      case StackerEffects.VerticalSpread:
         this.elements.forEach((el, index) => {
           this.renderer.setStyle(el.element, 'z-index', 99 - index);
         });
@@ -118,13 +119,6 @@ export class StackerComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         break;
 
-      case StackerEffects.VerticalSpread:
-        this.elements.forEach((el, index) => {
-          this.renderer.setStyle(el.element, 'z-index', 99 - index);
-          this.renderer.setStyle(el.element, 'transition', 'top .3s, box-shadow .3s');
-        });
-        break;
-
       case StackerEffects.Leaflet:
       case StackerEffects.Coverflow:
         this.renderer.setStyle(this.elementRef.nativeElement, 'perspective', '1600px');
@@ -132,7 +126,6 @@ export class StackerComponent implements OnInit, AfterViewInit, OnDestroy {
           this.renderer.setStyle(el.element, 'z-index', Math.abs(this.elements.length - index - 1));
           this.renderer.setStyle(el.element, 'transform-style', 'preserve-3d');
           this.renderer.setStyle(el.element, 'transform-origin', 'top center');
-          this.renderer.setStyle(el.element, 'transition', 'transform .3s, box-shadow .3s, left .3s');
           if (this.effect === this.StackerEffects.Leaflet)
             this.renderer.setStyle(el.element, 'transform', 'rotateX(0deg)');
           else
@@ -312,9 +305,12 @@ export class StackerComponent implements OnInit, AfterViewInit, OnDestroy {
           this.renderer.setStyle(item, 'left', `30px`);
           this.renderer.setStyle(item, 'top', `30px`);
           this.renderer.setStyle(item, 'z-index', 99);
+          this.renderer.setStyle(item, 'transform', 'rotate(0deg)')
         } else {
           this.renderer.setStyle(item, 'transform', `rotate(${d === 'left' ? index * 5 : -index * 5}deg)`)
           this.renderer.setStyle(item, 'z-index', 99 - index);
+          this.renderer.setStyle(item, 'left', 0);
+          this.renderer.setStyle(item, 'top', 0);
         }
         break;
 
@@ -364,14 +360,15 @@ export class StackerComponent implements OnInit, AfterViewInit, OnDestroy {
         this.renderer.setStyle(item, 'z-index', index);
         this.renderer.setStyle(item, 'transform-origin', 'top left');
         this.renderer.setStyle(item, 'transform', `rotate(${index * 5}deg)`);
+        this.renderer.setStyle(item, 'transition-delay', `.${this.elements.length - 1 - index}s`);
         break;
 
       case StackerEffects.ElasticSpread:
         this.renderer.setStyle(item, 'z-index', index);
-        this.renderer.setStyle(item, 'top', `${index * 20}px`);
+        this.renderer.setStyle(item, 'top', `${index * 35}px`);
         setTimeout(() => {
-          this.renderer.setStyle(item, 'top', `${index * 17}px`);
-          this.renderer.setStyle(item, 'transition', 'all .2s');
+          this.renderer.setStyle(item, 'top', `${index * 30}px`);
+          this.renderer.setStyle(item, 'transition', 'all .1s');
         }, 300);
         break;
 
@@ -392,7 +389,7 @@ export class StackerComponent implements OnInit, AfterViewInit, OnDestroy {
         const margin = center - index;
         this.renderer.setStyle(item, 'z-index', index);
         this.renderer.setStyle(item, 'transform', 'rotateY(-45deg) scale(0.9)');
-        this.renderer.setStyle(item, 'left', `${ margin * 50 }px`);
+        this.renderer.setStyle(item, 'left', `${margin * 50}px`);
         break;
     }
   }
@@ -464,6 +461,7 @@ export class StackerComponent implements OnInit, AfterViewInit, OnDestroy {
         this.renderer.setStyle(item, 'transform-origin', 'top left');
         this.renderer.setStyle(item, 'z-index', index === this.selectedIndex ? 99 : 99 - index);
         this.renderer.setStyle(item, 'transform', 'rotate(0deg)');
+        this.renderer.setStyle(item, 'transition', 'transform .3s');
         break;
 
       case StackerEffects.ElasticSpread:
