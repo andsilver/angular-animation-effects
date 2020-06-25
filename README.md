@@ -1,6 +1,6 @@
 # Several Animations with Angular 2+
 
-![Demo](https://animation-effects.herokuapp.com/)
+[Demo](https://animation-effects.herokuapp.com/)
 
 ![GitHub License](https://img.shields.io/badge/license-MIT-green.svg)
 
