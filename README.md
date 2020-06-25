@@ -6,6 +6,8 @@
 
 ## Demo
 
+![Demo](https://i.imgur.com/226mCBu.gifv)
+
 ## Install it with npm
 
 ## Usage
