@@ -6,7 +6,7 @@
 
 ## Demo
 
-![Demo](https://i.imgur.com/226mCBu.gifv)
+Demo Gif : https://i.imgur.com/226mCBu.gifv
 
 ## Install it with npm
 
